@@ -1,10 +1,10 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ResponsiveCalendar } from '@nivo/calendar';
+import { type CalendarDatum, ResponsiveCalendar } from '@nivo/calendar';
 
 type ActivityHeatmapProps = {
-	data: { date: string; value: number }[];
+	data: CalendarDatum[];
 };
 
 export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
@@ -44,7 +44,7 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 					dayBorderColor="#1c1c1c"
 					tooltip={data => (
 						<div className="rounded-lg bg-[#2d2d2d] p-2 text-sm text-white">
-							<strong>{data.date}</strong>
+							<strong>{data.day}</strong>
 							<br />
 							{data.value}
 							{' '}

@@ -3,7 +3,7 @@ import { ConversationList } from '@/components/conversation-list';
 
 // Sample data - in a real app this would come from your backend
 const activityData = [
-	{ date: '2024-05-08', value: 18 },
+	{ day: '2024-05-08', value: 18 },
 	// ... more dates
 ];
 
