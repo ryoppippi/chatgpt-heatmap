@@ -1,102 +1,66 @@
-import Image from 'next/image';
+import { ActivityHeatmap } from '@/components/activity-heatmap';
+import { ConversationList } from '@/components/conversation-list';
 
-export default function Home() {
+// Sample data - in a real app this would come from your backend
+const activityData = [
+	{ date: '2024-05-08', value: 18 },
+	// ... more dates
+];
+
+const conversations = [
+	{
+		id: '1',
+		title: 'Delayed function execution',
+		userMessages: 1,
+		aiResponses: 1,
+		timestamp: '05:35 PM',
+		totalMessages: 2,
+	},
+	{
+		id: '2',
+		title: 'Performance Tools for Websites',
+		userMessages: 1,
+		aiResponses: 1,
+		timestamp: '05:07 PM',
+		totalMessages: 2,
+	},
+	{
+		id: '3',
+		title: 'Crispy Fish Batter Tips',
+		userMessages: 3,
+		aiResponses: 4,
+		timestamp: '06:58 AM',
+		totalMessages: 7,
+	},
+	{
+		id: '4',
+		title: 'HTML Sitemaps: Usefulness in 2024',
+		userMessages: 1,
+		aiResponses: 1,
+		timestamp: '03:24 PM',
+		totalMessages: 2,
+	},
+];
+
+export default function AIAnalytics() {
 	return (
-		<div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-			<main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-				<Image
-					className="dark:invert"
-					src="/next.svg"
-					alt="Next.js logo"
-					width={180}
-					height={38}
-					priority
-				/>
-				<ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-					<li className="mb-2">
-						Get started by editing
-						{' '}
-						<code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-							app/page.tsx
-						</code>
-						.
-					</li>
-					<li>Save and see your changes instantly.</li>
-				</ol>
-
-				<div className="flex gap-4 items-center flex-col sm:flex-row">
-					<a
-						className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-						href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						<Image
-							className="dark:invert"
-							src="/vercel.svg"
-							alt="Vercel logomark"
-							width={20}
-							height={20}
-						/>
-						Deploy now
-					</a>
-					<a
-						className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-						href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						Read our docs
-					</a>
+		<div className="min-h-screen bg-black p-8">
+			<div className="mx-auto max-w-6xl space-y-8">
+				<div className="space-y-2">
+					<h1 className="text-2xl font-bold text-white">AI Usage Analytics</h1>
+					<p className="text-gray-400">Track your AI interaction patterns over time</p>
 				</div>
-			</main>
-			<footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/file.svg"
-						alt="File icon"
-						width={16}
-						height={16}
-					/>
-					Learn
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/window.svg"
-						alt="Window icon"
-						width={16}
-						height={16}
-					/>
-					Examples
-				</a>
-				<a
-					className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-					href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					<Image
-						aria-hidden
-						src="/globe.svg"
-						alt="Globe icon"
-						width={16}
-						height={16}
-					/>
-					Go to nextjs.org →
-				</a>
-			</footer>
+				<ActivityHeatmap data={activityData} />
+				<ConversationList
+					date="May 08, 2024"
+					stats={{
+						conversations: 18,
+						userMessages: 43,
+						aiResponses: 46,
+					}}
+					conversations={conversations}
+				/>
+			</div>
 		</div>
 	);
 }
