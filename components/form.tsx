@@ -8,7 +8,7 @@ import {
 	DropzoneTrigger,
 	useDropzone,
 } from '@/components/ui/dropzone';
-import { conversationDataAtom } from '@/lib/atom';
+import { conversationsAtom } from '@/lib/atom';
 import { useSetAtom } from 'jotai';
 import { CloudUploadIcon } from 'lucide-react';
 import * as React from 'react';
@@ -24,11 +24,11 @@ async function readFileAsText(file: File): Promise<string> {
 }
 
 export function Form() {
-	const setConversationData = useSetAtom(conversationDataAtom);
+	const setConversationData = useSetAtom(conversationsAtom);
 	const dropzone = useDropzone({
 		onDropFile: async (file: File) => {
 			const text = await readFileAsText(file);
-			const data = JSON.parse(text) as Conversation;
+			const data = JSON.parse(text) as Conversation[];
 			return {
 				status: 'success',
 				result: data,
