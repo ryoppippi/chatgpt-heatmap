@@ -47,18 +47,6 @@ function Header({ date, conversations }: ConversationListProps) {
 	);
 }
 
-function isEmptyParts(parts: unknown[]) {
-	if (parts.length === 0) {
-		return true;
-	}
-
-	if (parts.length === 1 && typeof parts[0] === 'string' && parts[0].trim() === '') {
-		return true;
-	}
-
-	return false;
-}
-
 function useConversationCounts(conversations: Conversation[]) {
 	const [conversationsInfo, setConversationsInfo] = useAtom(conversationsInfoAtom);
 
@@ -71,7 +59,6 @@ function useConversationCounts(conversations: Conversation[]) {
 
 			const aiResponses = Object
 				.values(conversation.mapping)
-				.filter(node => isEmptyParts(node.message?.content.parts ?? []))
 				.filter(node => node.message?.author.role === 'assistant')
 				.length;
 
@@ -95,7 +82,6 @@ function ConversationInfo({ conversation }: { conversation: Conversation }) {
 
 	const aiResponses = Object
 		.values(conversation.mapping)
-		.filter(node => isEmptyParts(node.message?.content.parts ?? []))
 		.filter(node => node.message?.author.role === 'assistant')
 		.length;
 
