@@ -12,6 +12,7 @@ import { conversationsAtom } from '@/lib/atom';
 import { useSetAtom } from 'jotai';
 import { CloudUploadIcon } from 'lucide-react';
 import * as React from 'react';
+import typia from 'typia';
 
 /** read file as text */
 async function readFileAsText(file: File): Promise<string> {
@@ -28,10 +29,20 @@ export function Form() {
 	const dropzone = useDropzone({
 		onDropFile: async (file: File) => {
 			const text = await readFileAsText(file);
-			const data = JSON.parse(text) as Conversation[];
+			const data = JSON.parse(text) as unknown;
+			const validationRes = typia.validate<Conversation[]>(data);
+			if (!validationRes.success) {
+				console.error(validationRes.errors);
+				// eslint-disable-next-line no-alert
+				alert('Invalid JSON file');
+				return {
+					status: 'error',
+					error: validationRes.errors.toString(),
+				};
+			}
 			return {
 				status: 'success',
-				result: data,
+				result: validationRes.data,
 			};
 		},
 		validation: {

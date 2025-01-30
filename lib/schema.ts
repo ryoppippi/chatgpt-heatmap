@@ -31,14 +31,14 @@ type Message = {
 };
 
 type Author = {
-	role: 'system' | 'assistant' | 'user';
+	role: 'system' | 'assistant' | 'tool' | 'user';
 	name: string | null;
 	metadata: Record<string, unknown>;
 };
 
 type MessageContent = {
 	content_type: string; // text, image, voice, etc.
-	parts: unknown[];
+	parts?: unknown[];
 };
 
 type MessageMetadata = {

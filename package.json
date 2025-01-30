@@ -4,7 +4,7 @@
   "private": true,
   "packageManager": "pnpm@10.0.0",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -22,7 +22,8 @@
     "react-dom": "^19.0.0",
     "react-dropzone": "^14.3.5",
     "tailwind-merge": "^2.6.0",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "typia": "^7.6.0"
   },
   "devDependencies": {
     "@antfu/ni": "^23.3.0",
@@ -31,6 +32,7 @@
     "@next/eslint-plugin-next": "^15.1.6",
     "@nivo/calendar": "^0.88.0",
     "@ryoppippi/eslint-config": "npm:@jsr/ryoppippi__eslint-config@^0.0.25",
+    "@ryoppippi/unplugin-typia": "^1.2.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
