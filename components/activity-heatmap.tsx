@@ -5,9 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { selectedDayAtom } from '@/lib/atom';
 import { type CalendarDatum, ResponsiveCalendar } from '@nivo/calendar';
 import { format } from 'date-fns';
+import html2canvas from 'html2canvas';
 import { useSetAtom } from 'jotai';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
+import { useRef, useState } from 'react';
 
 type ActivityHeatmapProps = {
 	data: CalendarDatum[];
@@ -16,6 +17,7 @@ type ActivityHeatmapProps = {
 export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 	const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 	const setDayAtom = useSetAtom(selectedDayAtom);
+	const heatmapRef = useRef<HTMLDivElement>(null);
 
 	const filteredData = data.filter((item) => {
 		const year = new Date(item.day).getFullYear();
@@ -30,6 +32,17 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 
 	const handleNextYear = () => {
 		setCurrentYear(prev => prev + 1);
+	};
+
+	const handleDownload = async () => {
+		if (heatmapRef.current != null) {
+			const canvas = await html2canvas(heatmapRef.current);
+			const image = canvas.toDataURL('image/png', 1.0);
+			const link = document.createElement('a');
+			link.download = `heatmap-${currentYear}.png`;
+			link.href = image;
+			link.click();
+		}
 	};
 
 	return (
@@ -68,7 +81,7 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 							variant="ghost"
 							size="icon"
 							onClick={handlePreviousYear}
-							className="h-8 w-8 text-white hover:bg-[#2d2d2d]"
+							className="h-8 w-8 text-white hover:bg-[#2d2d2d] cursor-pointer"
 						>
 							<ChevronLeft className="h-4 w-4" />
 							<span className="sr-only">Previous year</span>
@@ -77,15 +90,24 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 							variant="ghost"
 							size="icon"
 							onClick={handleNextYear}
-							className="h-8 w-8 text-white hover:bg-[#2d2d2d]"
+							className="h-8 w-8 text-white hover:bg-[#2d2d2d] cursor-pointer"
 						>
 							<ChevronRight className="h-4 w-4" />
 							<span className="sr-only">Next year</span>
 						</Button>
+						<Button
+							variant="ghost"
+							size="icon"
+							onClick={handleDownload}
+							className="h-8 w-8 text-white hover:bg-[#2d2d2d] cursor-pointer"
+						>
+							<Download className="h-4 w-4" />
+							<span className="sr-only">Download heatmap</span>
+						</Button>
 					</div>
 				</div>
 			</CardHeader>
-			<CardContent className="h-[200px]">
+			<CardContent className="h-[200px]" ref={heatmapRef}>
 				<ResponsiveCalendar
 					data={filteredData}
 					from={`${currentYear}-01-01`}
