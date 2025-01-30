@@ -1,0 +1,6 @@
+{
+  "name": "chatgpt-heatmap",
+  "build": {
+    "publish": "public"
+  }
+}
