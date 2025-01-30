@@ -1,31 +1,19 @@
 export type Conversation = {
+	id: string;
 	title: string;
 	create_time: number;
 	update_time: number;
 	mapping: Record<string, MappingNode>;
-	// moderation_results: any[]; // 詳細不明なので適宜修正可能
-	current_node: string;
-	// plugin_ids: any | null;
 	conversation_id: string;
-	// conversation_template_id: any | null;
-	// gizmo_id: any | null;
-	// gizmo_type: any | null;
+	current_node: string;
 	is_archived: boolean;
-	is_starred: boolean | null;
-	safe_urls: string[];
-	default_model_slug: string;
-	// conversation_origin: any | null;
-	// voice: any | null;
-	// async_status: any | null;
-	disabled_tool_ids: string[];
-	id: string;
 };
 
 type MappingNode = {
 	id: string;
 	message: Message | null;
-	parent: string | null;
-	children: string[];
+	parent: string | null; // previous message node
+	children: string[]; // next message nodes
 };
 
 type Message = {
@@ -43,14 +31,14 @@ type Message = {
 };
 
 type Author = {
-	role: string;
+	role: 'system' | 'assistant' | 'user';
 	name: string | null;
-	// metadata: Record<string, any>;
+	metadata: Record<string, unknown>;
 };
 
 type MessageContent = {
-	content_type: string;
-	parts: string[];
+	content_type: string; // text, image, voice, etc.
+	parts: unknown[];
 };
 
 type MessageMetadata = {
