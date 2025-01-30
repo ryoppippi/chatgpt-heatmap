@@ -1,6 +1,6 @@
 {
-  "name": "chat-gpt-heatmap",
-  "version": "0.1.0",
+  "name": "chatgpt-heatmap",
+  "version": "0.0.0",
   "private": true,
   "packageManager": "pnpm@10.0.0",
   "scripts": {
