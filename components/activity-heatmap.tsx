@@ -2,7 +2,10 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { selectedDayAtom } from '@/lib/atom';
 import { type CalendarDatum, ResponsiveCalendar } from '@nivo/calendar';
+import { format } from 'date-fns';
+import { useSetAtom } from 'jotai';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 
@@ -12,6 +15,7 @@ type ActivityHeatmapProps = {
 
 export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 	const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+	const setDayAtom = useSetAtom(selectedDayAtom);
 
 	const filteredData = data.filter((item) => {
 		const year = new Date(item.day).getFullYear();
@@ -98,6 +102,7 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 							fill: '#ffffff80',
 						},
 					}}
+					onClick={day => setDayAtom(format(new Date(day.day), 'yyyy-MM-dd'))}
 				/>
 			</CardContent>
 		</Card>

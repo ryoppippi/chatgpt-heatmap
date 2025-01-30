@@ -1,65 +1,136 @@
-import type { Conversation } from '../types';
+import type { Conversation } from '../lib/schema';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { format, fromUnixTime } from 'date-fns';
+import { atom, useAtomValue, useSetAtom } from 'jotai';
+import Link from 'next/link';
+import * as React from 'react';
 
 type ConversationListProps = {
 	date: string;
-	stats: {
-		conversations: number;
-		userMessages: number;
-		aiResponses: number;
-	};
 	conversations: Conversation[];
 };
 
-export function ConversationList({ date, stats, conversations }: ConversationListProps) {
+const conversationsInfoAtom = atom<{ userMessages: number; apiResponses: number }[]>([]);
+
+function Header({ date, conversations }: ConversationListProps) {
+	const conversationsInfo = useAtomValue(conversationsInfoAtom);
+	const totalMessages = conversationsInfo.reduce((acc, curr) => acc + curr.userMessages + curr.apiResponses, 0);
+	const totalUserMessages = conversationsInfo.reduce((acc, curr) => acc + curr.userMessages, 0);
+	const totalAIResponses = totalMessages - totalUserMessages;
+
+	return (
+		<>
+			<h2 className="text-lg font-medium">{date}</h2>
+			<div className="mt-4 grid grid-cols-3 gap-4">
+				<div>
+					<div className="text-2xl font-bold">{conversations.length}</div>
+					<div className="text-sm text-gray-400">Total conversations</div>
+				</div>
+				<div>
+					<div className="text-2xl font-bold">{totalUserMessages}</div>
+					<div className="text-sm text-gray-400">User messages</div>
+				</div>
+				<div>
+					<div className="text-2xl font-bold">{totalAIResponses}</div>
+					<div className="text-sm text-gray-400">AI responses</div>
+				</div>
+			</div>
+		</>
+	);
+}
+
+function isEmptyParts(parts: unknown[]) {
+	if (parts.length === 0) {
+		return true;
+	}
+
+	if (parts.length === 1 && typeof parts[0] === 'string' && parts[0].trim() === '') {
+		return true;
+	}
+
+	return false;
+}
+
+function ConversationInfo({ conversation }: { conversation: Conversation }) {
+	const userMessages = Object
+		.values(conversation.mapping)
+		.filter(node => node.message?.author.role === 'user')
+		.length;
+	const aiResponses = Object
+		.values(conversation.mapping)
+		.filter(node => isEmptyParts(node.message?.content.parts ?? []))
+		.filter(node => node.message?.author.role === 'assistant')
+		.length;
+	const totalMessages = userMessages + aiResponses;
+	const dateTime = fromUnixTime(conversation.create_time);
+	const chatGPTLink = `https://chatgpt.com/c/${conversation.conversation_id}`;
+
+	const setConversationsInfo = useSetAtom(conversationsInfoAtom);
+
+	React.useEffect(() => {
+		setConversationsInfo(prev => [...prev, { userMessages, apiResponses: aiResponses }]);
+	}, [userMessages, aiResponses, setConversationsInfo]);
+
+	return (
+		<div className="rounded-lg bg-[#2d2d2d] p-4 hover:bg-[#3d3d3d] transition-colors">
+			<Link href={chatGPTLink} target="_blank" rel="noopener noreferrer">
+				<div className="flex items-center justify-between">
+					<h4 className="font-medium">
+						{' '}
+						{conversation.title}
+						{' '}
+					</h4>
+					<span className="text-sm text-gray-400">{format(dateTime, 'HH:mm')}</span>
+				</div>
+				<div className="mt-2 flex items-center gap-4 text-sm text-gray-400">
+					<span>
+						{totalMessages}
+						{' '}
+						messages
+					</span>
+					<span>
+						{userMessages}
+						{' '}
+						user messages
+					</span>
+					<span>
+						{aiResponses}
+						{' '}
+						AI responses
+					</span>
+				</div>
+			</Link>
+		</div>
+	);
+}
+
+function Content({ conversations }: ConversationListProps) {
+	return (
+		<>
+			<h3 className="text-sm font-medium text-gray-400">Conversations</h3>
+			<div className="space-y-2">
+				{conversations.map(conversation => (
+					<ConversationInfo conversation={conversation} key={conversation.id} />
+				))}
+			</div>
+		</>
+	);
+}
+
+export function ConversationList({ ...props }: ConversationListProps) {
+	/* reset conversationsInfoAtom */
+	const setConversationsInfo = useSetAtom(conversationsInfoAtom);
+	React.useEffect(() => {
+		setConversationsInfo([]);
+	}, [setConversationsInfo, props.conversations, props.date]);
+
 	return (
 		<Card className="bg-[#1c1c1c] text-white">
 			<CardHeader>
-				<h2 className="text-lg font-medium">{date}</h2>
-				<div className="mt-4 grid grid-cols-3 gap-4">
-					<div>
-						<div className="text-2xl font-bold">{stats.conversations}</div>
-						<div className="text-sm text-gray-400">Total conversations</div>
-					</div>
-					<div>
-						<div className="text-2xl font-bold">{stats.userMessages}</div>
-						<div className="text-sm text-gray-400">User messages</div>
-					</div>
-					<div>
-						<div className="text-2xl font-bold">{stats.aiResponses}</div>
-						<div className="text-sm text-gray-400">AI responses</div>
-					</div>
-				</div>
+				<Header {...props} />
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<h3 className="text-sm font-medium text-gray-400">Conversations</h3>
-				<div className="space-y-2">
-					{conversations.map(conversation => (
-						<div key={conversation.id} className="rounded-lg bg-[#2d2d2d] p-4 hover:bg-[#3d3d3d] transition-colors">
-							<div className="flex items-center justify-between">
-								<h4 className="font-medium">{conversation.title}</h4>
-								<span className="text-sm text-gray-400">{conversation.timestamp}</span>
-							</div>
-							<div className="mt-2 flex items-center gap-4 text-sm text-gray-400">
-								<span>
-									{conversation.totalMessages}
-									{' '}
-									messages
-								</span>
-								<span>
-									{conversation.userMessages}
-									{' '}
-									user messages
-								</span>
-								<span>
-									{conversation.aiResponses}
-									{' '}
-									AI responses
-								</span>
-							</div>
-						</div>
-					))}
-				</div>
+				<Content {...props} />
 			</CardContent>
 		</Card>
 	);
