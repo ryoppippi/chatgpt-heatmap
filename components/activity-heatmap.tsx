@@ -22,6 +22,8 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 		return year === currentYear;
 	});
 
+	const totalConversations = filteredData.reduce((sum, item) => sum + item.value, 0);
+
 	const handlePreviousYear = () => {
 		setCurrentYear(prev => prev - 1);
 	};
@@ -34,26 +36,33 @@ export function ActivityHeatmap({ data }: ActivityHeatmapProps) {
 		<Card className="bg-[#1c1c1c] text-white">
 			<CardHeader>
 				<div className="flex items-center justify-between">
-					<CardTitle className="flex items-center gap-2 text-lg font-medium">
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							strokeWidth="2"
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							className="h-5 w-5"
-						>
-							<rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
-							<line x1="16" y1="2" x2="16" y2="6" />
-							<line x1="8" y1="2" x2="8" y2="6" />
-							<line x1="3" y1="10" x2="21" y2="10" />
-						</svg>
-						Activity Heatmap
-						{' '}
-						{currentYear}
-					</CardTitle>
+					<div className="flex flex-col">
+						<CardTitle className="flex items-center gap-2 text-lg font-medium">
+							<svg
+								xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="2"
+								strokeLinecap="round"
+								strokeLinejoin="round"
+								className="h-5 w-5"
+							>
+								<rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+								<line x1="16" y1="2" x2="16" y2="6" />
+								<line x1="8" y1="2" x2="8" y2="6" />
+								<line x1="3" y1="10" x2="21" y2="10" />
+							</svg>
+							Activity Heatmap
+							{' '}
+							{currentYear}
+						</CardTitle>
+						<p className="mt-1 text-sm text-gray-400">
+							Total conversations:
+							{' '}
+							<span className="font-bold text-white">{totalConversations}</span>
+						</p>
+					</div>
 					<div className="flex items-center gap-2">
 						<Button
 							variant="ghost"
