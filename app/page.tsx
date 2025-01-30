@@ -10,19 +10,6 @@ import { useAtomValue } from 'jotai';
 import Link from 'next/link';
 import * as React from 'react';
 
-/** get activities from conversations */
-function getActivities(conversations: Conversation[]): { day: string; value: number }[] {
-	const activities: Record<string, number> = {};
-
-	conversations.forEach((conversation) => {
-		const date = fromUnixTime(conversation.create_time);
-		const formattedDate = format(date, 'yyyy-MM-dd');
-		activities[formattedDate] = (activities[formattedDate] ?? 0) + 1;
-	});
-
-	return Object.entries(activities).map(([day, value]) => ({ day, value }));
-}
-
 function filterConversationsByDay(conversations: Conversation[], day: string): Conversation[] {
 	return conversations.filter((conversation) => {
 		const date = fromUnixTime(conversation.create_time);
@@ -83,7 +70,7 @@ export default function AIAnalytics() {
 				{
 					// eslint-disable-next-line ts/strict-boolean-expressions
 					conversations && (
-						<ActivityHeatmap data={getActivities(conversations)} />
+						<ActivityHeatmap conversations={conversations} />
 					)
 				}
 				{
