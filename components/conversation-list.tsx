@@ -1,22 +1,30 @@
 import type { Conversation } from '../lib/schema';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { format, fromUnixTime } from 'date-fns';
-import { atom, useAtomValue, useSetAtom } from 'jotai';
+import { atom, useAtom } from 'jotai';
 import Link from 'next/link';
 import * as React from 'react';
+
+// 型定義を追加
+type ConversationInfoDict = {
+	userMessages: number;
+	apiResponses: number;
+};
+
+const conversationsInfoAtom = atom<ConversationInfoDict>({
+	userMessages: 0,
+	apiResponses: 0,
+});
 
 type ConversationListProps = {
 	date: string;
 	conversations: Conversation[];
 };
 
-const conversationsInfoAtom = atom<{ userMessages: number; apiResponses: number }[]>([]);
-
 function Header({ date, conversations }: ConversationListProps) {
-	const conversationsInfo = useAtomValue(conversationsInfoAtom);
-	const totalMessages = conversationsInfo.reduce((acc, curr) => acc + curr.userMessages + curr.apiResponses, 0);
-	const totalUserMessages = conversationsInfo.reduce((acc, curr) => acc + curr.userMessages, 0);
-	const totalAIResponses = totalMessages - totalUserMessages;
+	const [conversationsInfo] = useAtom(conversationsInfoAtom);
+	const totalUserMessages = conversationsInfo.userMessages;
+	const totalAIResponses = conversationsInfo.apiResponses;
 
 	return (
 		<>
@@ -51,25 +59,49 @@ function isEmptyParts(parts: unknown[]) {
 	return false;
 }
 
+function useConversationCounts(conversations: Conversation[]) {
+	const [conversationsInfo, setConversationsInfo] = useAtom(conversationsInfoAtom);
+
+	React.useEffect(() => {
+		const counts = conversations.reduce((acc, conversation) => {
+			const userMessages = Object
+				.values(conversation.mapping)
+				.filter(node => node.message?.author.role === 'user')
+				.length;
+
+			const aiResponses = Object
+				.values(conversation.mapping)
+				.filter(node => isEmptyParts(node.message?.content.parts ?? []))
+				.filter(node => node.message?.author.role === 'assistant')
+				.length;
+
+			return {
+				userMessages: acc.userMessages + userMessages,
+				apiResponses: acc.apiResponses + aiResponses,
+			};
+		}, { userMessages: 0, apiResponses: 0 });
+
+		setConversationsInfo(counts);
+	}, [conversations, setConversationsInfo]);
+
+	return conversationsInfo;
+}
+
 function ConversationInfo({ conversation }: { conversation: Conversation }) {
 	const userMessages = Object
 		.values(conversation.mapping)
 		.filter(node => node.message?.author.role === 'user')
 		.length;
+
 	const aiResponses = Object
 		.values(conversation.mapping)
 		.filter(node => isEmptyParts(node.message?.content.parts ?? []))
 		.filter(node => node.message?.author.role === 'assistant')
 		.length;
+
 	const totalMessages = userMessages + aiResponses;
 	const dateTime = fromUnixTime(conversation.create_time);
 	const chatGPTLink = `https://chatgpt.com/c/${conversation.conversation_id}`;
-
-	const setConversationsInfo = useSetAtom(conversationsInfoAtom);
-
-	React.useEffect(() => {
-		setConversationsInfo(prev => [...prev, { userMessages, apiResponses: aiResponses }]);
-	}, [userMessages, aiResponses, setConversationsInfo]);
 
 	return (
 		<div className="rounded-lg bg-[#2d2d2d] p-4 hover:bg-[#3d3d3d] transition-colors">
@@ -118,11 +150,7 @@ function Content({ conversations }: ConversationListProps) {
 }
 
 export function ConversationList({ ...props }: ConversationListProps) {
-	/* reset conversationsInfoAtom */
-	const setConversationsInfo = useSetAtom(conversationsInfoAtom);
-	React.useEffect(() => {
-		setConversationsInfo([]);
-	}, [setConversationsInfo, props.conversations, props.date]);
+	useConversationCounts(props.conversations);
 
 	return (
 		<Card className="bg-[#1c1c1c] text-white">
