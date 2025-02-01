@@ -1,37 +1,49 @@
 import type { Conversation } from '../lib/schema';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { conversationsByDayAtom, selectedDayAtom } from '@/lib/atom';
 import { format, fromUnixTime } from 'date-fns';
-import { atom, useAtom } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
-import * as React from 'react';
 
-// 型定義を追加
-type ConversationInfoDict = {
-	userMessages: number;
-	apiResponses: number;
-};
-
-const conversationsInfoAtom = atom<ConversationInfoDict>({
-	userMessages: 0,
-	apiResponses: 0,
+const totalUserMessagesAtom = atom((get) => {
+	const conversations = get(conversationsByDayAtom);
+	if (conversations == null) {
+		return 0;
+	}
+	return conversations.reduce((acc, conversation) => {
+		const userMessages = Object.values(conversation.mapping).filter(node => node.message?.author.role === 'user').length;
+		return acc + userMessages;
+	}, 0);
 });
 
-type ConversationListProps = {
-	date: string;
-	conversations: Conversation[];
-};
+const totalApiResponsesAtom = atom((get) => {
+	const conversations = get(conversationsByDayAtom);
+	if (conversations == null) {
+		return 0;
+	}
+	return conversations.reduce((acc, conversation) => {
+		const aiResponses = Object.values(conversation.mapping).filter(node => node.message?.author.role === 'assistant').length;
+		return acc + aiResponses;
+	}, 0);
+});
 
-function Header({ date, conversations }: ConversationListProps) {
-	const [conversationsInfo] = useAtom(conversationsInfoAtom);
-	const totalUserMessages = conversationsInfo.userMessages;
-	const totalAIResponses = conversationsInfo.apiResponses;
+const totalConversationsLengthAtom = atom((get) => {
+	const conversations = get(conversationsByDayAtom);
+	return conversations?.length ?? 0;
+});
+
+function Header() {
+	const date = useAtomValue(selectedDayAtom);
+	const totalUserMessages = useAtomValue(totalUserMessagesAtom);
+	const totalAIResponses = useAtomValue(totalApiResponsesAtom);
+	const totalConversations = useAtomValue(totalConversationsLengthAtom);
 
 	return (
 		<>
 			<h2 className="text-lg font-medium">{date}</h2>
 			<div className="mt-4 grid grid-cols-3 gap-4">
 				<div>
-					<div className="text-2xl font-bold">{conversations.length}</div>
+					<div className="text-2xl font-bold">{totalConversations}</div>
 					<div className="text-sm text-gray-400">Total conversations</div>
 				</div>
 				<div>
@@ -45,33 +57,6 @@ function Header({ date, conversations }: ConversationListProps) {
 			</div>
 		</>
 	);
-}
-
-function useConversationCounts(conversations: Conversation[]) {
-	const [conversationsInfo, setConversationsInfo] = useAtom(conversationsInfoAtom);
-
-	React.useEffect(() => {
-		const counts = conversations.reduce((acc, conversation) => {
-			const userMessages = Object
-				.values(conversation.mapping)
-				.filter(node => node.message?.author.role === 'user')
-				.length;
-
-			const aiResponses = Object
-				.values(conversation.mapping)
-				.filter(node => node.message?.author.role === 'assistant')
-				.length;
-
-			return {
-				userMessages: acc.userMessages + userMessages,
-				apiResponses: acc.apiResponses + aiResponses,
-			};
-		}, { userMessages: 0, apiResponses: 0 });
-
-		setConversationsInfo(counts);
-	}, [conversations, setConversationsInfo]);
-
-	return conversationsInfo;
 }
 
 function ConversationInfo({ conversation }: { conversation: Conversation }) {
@@ -122,7 +107,13 @@ function ConversationInfo({ conversation }: { conversation: Conversation }) {
 	);
 }
 
-function Content({ conversations }: ConversationListProps) {
+function Content() {
+	const conversations = useAtomValue(conversationsByDayAtom);
+
+	if (conversations == null) {
+		return null;
+	}
+
 	return (
 		<>
 			<h3 className="text-sm font-medium text-gray-400">Conversations</h3>
@@ -135,16 +126,14 @@ function Content({ conversations }: ConversationListProps) {
 	);
 }
 
-export function ConversationList({ ...props }: ConversationListProps) {
-	useConversationCounts(props.conversations);
-
+export function ConversationList() {
 	return (
 		<Card className="bg-[#1c1c1c] text-white">
 			<CardHeader>
-				<Header {...props} />
+				<Header />
 			</CardHeader>
 			<CardContent className="space-y-4">
-				<Content {...props} />
+				<Content />
 			</CardContent>
 		</Card>
 	);

@@ -1,23 +1,25 @@
 'use client';
 
-import type { Conversation } from '@/lib/schema';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { selectedDayAtom } from '@/lib/atom';
-import { type CalendarDatum, ResponsiveCalendar } from '@nivo/calendar';
+import { conversationsAtom, selectedDayAtom } from '@/lib/atom';
+import { ResponsiveCalendar } from '@nivo/calendar';
 import { format, fromUnixTime } from 'date-fns';
 import html2canvas from 'html2canvas';
-import { useSetAtom } from 'jotai';
+import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai';
 import { ChevronLeft, ChevronRight, Download } from 'lucide-react';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 
-type ActivityHeatmapProps = {
-	conversations: Conversation[];
-};
+const currentYearAtom = atom(new Date().getFullYear());
 
-/** get activities from conversations */
-function getActivities(conversations: Conversation[]): CalendarDatum[] {
+// /** get activities from conversations */
+const activitiesAtom = atom((get) => {
+	const conversations = get(conversationsAtom);
 	const activities: Record<string, number> = {};
+
+	if (conversations == null) {
+		return [];
+	}
 
 	conversations.forEach((conversation) => {
 		const date = fromUnixTime(conversation.create_time);
@@ -26,21 +28,30 @@ function getActivities(conversations: Conversation[]): CalendarDatum[] {
 	});
 
 	return Object.entries(activities).map(([day, value]) => ({ day, value }));
-}
+});
 
-export function ActivityHeatmap({ conversations }: ActivityHeatmapProps) {
-	const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-	const setDayAtom = useSetAtom(selectedDayAtom);
-	const heatmapRef = useRef<HTMLDivElement>(null);
+const activitiesByYearAtom = atom((get) => {
+	const activities = get(activitiesAtom);
+	const currentYear = get(currentYearAtom);
 
-	const data = getActivities(conversations);
-
-	const filteredData = data.filter((item) => {
+	return activities.filter((item) => {
 		const year = new Date(item.day).getFullYear();
 		return year === currentYear;
 	});
+});
 
-	const totalConversations = filteredData.reduce((sum, item) => sum + item.value, 0);
+const totalConversationsAtom = atom((get) => {
+	const activities = get(activitiesByYearAtom);
+	return activities.reduce((sum, item) => sum + item.value, 0);
+});
+
+export function ActivityHeatmap() {
+	const [currentYear, setCurrentYear] = useAtom(currentYearAtom);
+	const heatmapRef = useRef<HTMLDivElement>(null);
+
+	const setDayAtom = useSetAtom(selectedDayAtom);
+	const activitiesByYear = useAtomValue(activitiesByYearAtom);
+	const totalConversations = useAtomValue(totalConversationsAtom);
 
 	const handlePreviousYear = () => {
 		setCurrentYear(prev => prev - 1);
@@ -125,7 +136,7 @@ export function ActivityHeatmap({ conversations }: ActivityHeatmapProps) {
 			</CardHeader>
 			<CardContent className="h-[200px]" ref={heatmapRef}>
 				<ResponsiveCalendar
-					data={filteredData}
+					data={activitiesByYear}
 					from={`${currentYear}-01-01`}
 					to={`${currentYear}-12-31`}
 					emptyColor="#2d2d2d"
