@@ -1,22 +1,11 @@
 'use client';
 
-import type { Conversation } from '@/lib/schema';
 import { ActivityHeatmap } from '@/components/activity-heatmap';
 import { ConversationList } from '@/components/conversation-list';
 import { Form } from '@/components/form';
 import { conversationsAtom, selectedDayAtom } from '@/lib/atom';
-import { format, fromUnixTime } from 'date-fns';
 import { useAtomValue } from 'jotai';
 import Link from 'next/link';
-import * as React from 'react';
-
-function filterConversationsByDay(conversations: Conversation[], day: string): Conversation[] {
-	return conversations.filter((conversation) => {
-		const date = fromUnixTime(conversation.create_time);
-		const formattedDate = format(date, 'yyyy-MM-dd');
-		return formattedDate === day;
-	});
-}
 
 function Head() {
 	return (
@@ -32,8 +21,6 @@ function Head() {
 export default function AIAnalytics() {
 	const conversations = useAtomValue(conversationsAtom);
 	const selectedDay = useAtomValue(selectedDayAtom);
-
-	const filteredConversations = conversations != null && selectedDay != null ? filterConversationsByDay(conversations, selectedDay) : [];
 
 	return (
 		<div className="min-h-screen bg-black p-8">
@@ -70,16 +57,13 @@ export default function AIAnalytics() {
 				{
 					// eslint-disable-next-line ts/strict-boolean-expressions
 					conversations && (
-						<ActivityHeatmap conversations={conversations} />
+						<ActivityHeatmap />
 					)
 				}
 				{
 					// eslint-disable-next-line ts/strict-boolean-expressions
 					conversations && selectedDay && (
-						<ConversationList
-							date={selectedDay ?? ''}
-							conversations={filteredConversations}
-						/>
+						<ConversationList />
 					)
 				}
 			</div>
