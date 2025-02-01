@@ -10,7 +10,8 @@
     "lint": "next lint",
     "format": "nr lint --fix",
     "release": "nlx bumpp",
-    "test": "vitest"
+    "test": "vitest",
+    "prepare": "husky"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
@@ -49,7 +50,9 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "html2canvas": "^1.4.1",
+    "husky": "^9.1.7",
     "jsdom": "^26.0.0",
+    "lint-staged": "^15.4.3",
     "postcss": "^8",
     "tailwindcss": "^4.0.0",
     "typescript": "^5",
@@ -63,5 +66,10 @@
     "executionEnv": {
       "nodeVersion": "22.11.0"
     }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,html,yaml,yml,md}": [
+      "next lint"
+    ]
   }
 }
