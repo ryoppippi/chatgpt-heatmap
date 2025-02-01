@@ -15,7 +15,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
 	title: 'ChatGPT Usage Analytics',
 	description: 'Track your AI interaction patterns over time',
-	icons: 'https://ryoppippi.com/ryoppippi.jpg',
 };
 
 export default function RootLayout({
