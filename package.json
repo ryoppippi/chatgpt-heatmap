@@ -11,7 +11,8 @@
     "format": "nr lint --fix",
     "release": "nlx bumpp",
     "test": "vitest",
-    "prepare": "husky"
+    "prepare": "husky",
+    "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
