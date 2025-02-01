@@ -12,7 +12,7 @@ import { useRef } from 'react';
 
 const currentYearAtom = atom(new Date().getFullYear());
 
-// /** get activities from conversations */
+/** get activities from conversations */
 const activitiesAtom = atom((get) => {
 	const conversations = get(conversationsAtom);
 	const activities: Record<string, number> = {};
@@ -30,6 +30,7 @@ const activitiesAtom = atom((get) => {
 	return Object.entries(activities).map(([day, value]) => ({ day, value }));
 });
 
+/** filter activities by year */
 const activitiesByYearAtom = atom((get) => {
 	const activities = get(activitiesAtom);
 	const currentYear = get(currentYearAtom);
@@ -40,6 +41,7 @@ const activitiesByYearAtom = atom((get) => {
 	});
 });
 
+/** total conversations by year */
 const totalConversationsAtom = atom((get) => {
 	const activities = get(activitiesByYearAtom);
 	return activities.reduce((sum, item) => sum + item.value, 0);
