@@ -6,7 +6,7 @@ import { ConversationList } from '@/components/conversation-list';
 import { Form } from '@/components/form';
 import { conversationsAtom, selectedDayAtom } from '@/lib/atom';
 import { format, fromUnixTime } from 'date-fns';
-import { useAtomValue } from 'jotai';
+import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
 import * as React from 'react';
 
@@ -17,6 +17,12 @@ function filterConversationsByDay(conversations: Conversation[], day: string): C
 		return formattedDate === day;
 	});
 }
+
+const conversationsByDayAtom = atom((get) => {
+	const conversations = get(conversationsAtom);
+	const selectedDay = get(selectedDayAtom);
+	return conversations != null && selectedDay != null ? filterConversationsByDay(conversations, selectedDay) : [];
+});
 
 function Head() {
 	return (
@@ -32,8 +38,7 @@ function Head() {
 export default function AIAnalytics() {
 	const conversations = useAtomValue(conversationsAtom);
 	const selectedDay = useAtomValue(selectedDayAtom);
-
-	const filteredConversations = conversations != null && selectedDay != null ? filterConversationsByDay(conversations, selectedDay) : [];
+	const filteredConversations = useAtomValue(conversationsByDayAtom);
 
 	return (
 		<div className="min-h-screen bg-black p-8">
