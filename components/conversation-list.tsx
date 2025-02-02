@@ -40,28 +40,46 @@ function isAIMessage(node: Conversation['mapping'][0]) {
 	return node.message?.author.role === 'assistant';
 }
 
+function TotalConversationsHeader() {
+	const totalConversations = useAtomValue(totalConversationsLengthAtom);
+	return (
+		<div>
+			<div className="text-2xl font-bold">{totalConversations}</div>
+			<div className="text-sm text-gray-400">Total conversations</div>
+		</div>
+	);
+}
+
+function TotalMessagesHeader() {
+	const totalUserMessages = useAtomValue(totalUserMessagesAtom);
+	return (
+		<div>
+			<div className="text-2xl font-bold">{totalUserMessages}</div>
+			<div className="text-sm text-gray-400">User messages</div>
+		</div>
+	);
+}
+
+function TotalAIResponsesHeader() {
+	const totalAIResponses = useAtomValue(totalApiResponsesAtom);
+	return (
+		<div>
+			<div className="text-2xl font-bold">{totalAIResponses}</div>
+			<div className="text-sm text-gray-400">AI responses</div>
+		</div>
+	);
+}
+
 function Header() {
 	const date = useAtomValue(selectedDayAtom);
-	const totalUserMessages = useAtomValue(totalUserMessagesAtom);
-	const totalAIResponses = useAtomValue(totalApiResponsesAtom);
-	const totalConversations = useAtomValue(totalConversationsLengthAtom);
 
 	return (
 		<>
 			<h2 className="text-lg font-medium">{date}</h2>
 			<div className="mt-4 grid grid-cols-3 gap-4">
-				<div>
-					<div className="text-2xl font-bold">{totalConversations}</div>
-					<div className="text-sm text-gray-400">Total conversations</div>
-				</div>
-				<div>
-					<div className="text-2xl font-bold">{totalUserMessages}</div>
-					<div className="text-sm text-gray-400">User messages</div>
-				</div>
-				<div>
-					<div className="text-2xl font-bold">{totalAIResponses}</div>
-					<div className="text-sm text-gray-400">AI responses</div>
-				</div>
+				<TotalConversationsHeader />
+				<TotalMessagesHeader />
+				<TotalAIResponsesHeader />
 			</div>
 		</>
 	);
