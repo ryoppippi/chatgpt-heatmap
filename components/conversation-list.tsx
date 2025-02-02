@@ -70,12 +70,15 @@ function TotalAIResponsesHeader() {
 	);
 }
 
-function Header() {
+function DateHeader() {
 	const date = useAtomValue(selectedDayAtom);
+	return <h2 className="text-lg font-medium">{date}</h2>;
+}
 
+function Header() {
 	return (
 		<>
-			<h2 className="text-lg font-medium">{date}</h2>
+			<DateHeader />
 			<div className="mt-4 grid grid-cols-3 gap-4">
 				<TotalConversationsHeader />
 				<TotalMessagesHeader />
