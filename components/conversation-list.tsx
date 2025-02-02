@@ -1,12 +1,12 @@
 import type { Conversation } from '../lib/schema';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { conversationsByDayAtom, selectedDayAtom } from '@/lib/atom';
+import { conversationsBySelectedDayAtom, selectedDayAtom } from '@/lib/atom';
 import { format, fromUnixTime } from 'date-fns';
 import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
 
 const totalUserMessagesAtom = atom((get) => {
-	const conversations = get(conversationsByDayAtom);
+	const conversations = get(conversationsBySelectedDayAtom);
 	if (conversations == null) {
 		return 0;
 	}
@@ -17,7 +17,7 @@ const totalUserMessagesAtom = atom((get) => {
 });
 
 const totalApiResponsesAtom = atom((get) => {
-	const conversations = get(conversationsByDayAtom);
+	const conversations = get(conversationsBySelectedDayAtom);
 	if (conversations == null) {
 		return 0;
 	}
@@ -28,7 +28,7 @@ const totalApiResponsesAtom = atom((get) => {
 });
 
 const totalConversationsLengthAtom = atom((get) => {
-	const conversations = get(conversationsByDayAtom);
+	const conversations = get(conversationsBySelectedDayAtom);
 	return conversations?.length ?? 0;
 });
 
@@ -116,7 +116,7 @@ function ConversationInfo({ conversation }: { conversation: Conversation }) {
 }
 
 function Content() {
-	const conversations = useAtomValue(conversationsByDayAtom);
+	const conversations = useAtomValue(conversationsBySelectedDayAtom);
 
 	if (conversations == null) {
 		return null;
