@@ -11,7 +11,7 @@ const totalUserMessagesAtom = atom((get) => {
 		return 0;
 	}
 	return conversations.reduce((acc, conversation) => {
-		const userMessages = Object.values(conversation.mapping).filter(node => node.message?.author.role === 'user').length;
+		const userMessages = Object.values(conversation.mapping).filter(isUserMessage).length;
 		return acc + userMessages;
 	}, 0);
 });
@@ -22,7 +22,7 @@ const totalApiResponsesAtom = atom((get) => {
 		return 0;
 	}
 	return conversations.reduce((acc, conversation) => {
-		const aiResponses = Object.values(conversation.mapping).filter(node => node.message?.author.role === 'assistant').length;
+		const aiResponses = Object.values(conversation.mapping).filter(isAIMessage).length;
 		return acc + aiResponses;
 	}, 0);
 });
@@ -31,6 +31,14 @@ const totalConversationsLengthAtom = atom((get) => {
 	const conversations = get(conversationsByDayAtom);
 	return conversations?.length ?? 0;
 });
+
+function isUserMessage(node: Conversation['mapping'][0]) {
+	return node.message?.author.role === 'user';
+}
+
+function isAIMessage(node: Conversation['mapping'][0]) {
+	return node.message?.author.role === 'assistant';
+}
 
 function Header() {
 	const date = useAtomValue(selectedDayAtom);
@@ -62,12 +70,12 @@ function Header() {
 function ConversationInfo({ conversation }: { conversation: Conversation }) {
 	const userMessages = Object
 		.values(conversation.mapping)
-		.filter(node => node.message?.author.role === 'user')
+		.filter(isUserMessage)
 		.length;
 
 	const aiResponses = Object
 		.values(conversation.mapping)
-		.filter(node => node.message?.author.role === 'assistant')
+		.filter(isAIMessage)
 		.length;
 
 	const totalMessages = userMessages + aiResponses;
