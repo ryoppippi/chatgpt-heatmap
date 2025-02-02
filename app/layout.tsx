@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { DEV } from 'esm-env';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
@@ -24,10 +25,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
+			<head>
+				{ DEV && (<script src="https://unpkg.com/react-scan/dist/auto.global.js" async />) }
+			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
 				{children}
+
 			</body>
 		</html>
 	);
