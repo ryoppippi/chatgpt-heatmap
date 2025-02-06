@@ -1,11 +1,11 @@
 'use client';
 
-import { ActivityHeatmap } from '@/components/activity-heatmap';
-import { ConversationList } from '@/components/conversation-list';
-import { Form } from '@/components/form';
 import { conversationsAtom } from '@/lib/atom';
 import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
+import { ActivityHeatmap } from './activity-heatmap';
+import { ConversationList } from './conversation-list';
+import { Form } from './form';
 
 function Head() {
 	return (
@@ -20,7 +20,7 @@ function Head() {
 
 const viewAtom = atom((get) => {
 	const conversations = get(conversationsAtom);
-	if (conversations == null) {
+	if (!conversations) {
 		return 'upload';
 	}
 	return 'analytics';
