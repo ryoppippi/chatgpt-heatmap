@@ -20,7 +20,7 @@ function Head() {
 
 const viewAtom = atom((get) => {
 	const conversations = get(conversationsAtom);
-	if (!conversations) {
+	if (conversations == null) {
 		return 'upload';
 	}
 	return 'analytics';
