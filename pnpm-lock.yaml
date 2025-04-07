@@ -124,8 +124,8 @@ importers:
         specifier: ^15.4.3
         version: 15.4.3
       postcss:
-        specifier: ^8
-        version: 8.5.1
+        specifier: ^8.5.3
+        version: 8.5.3
       tailwindcss:
         specifier: ^4.0.0
         version: 4.0.0
@@ -3280,8 +3280,8 @@ packages:
     resolution: {integrity: sha512-PS08Iboia9mts/2ygV3eLpY5ghnUcfLV/EXTOW1E2qYxJKGGBUtNjN76FYHnMs36RmARn41bC0AZmn+rR0OVpQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postcss@8.5.1:
-    resolution: {integrity: sha512-6oz2beyjc5VMn/KV1pPw8fliQkhBXrVn1Z3TVyqZxU8kZpzEKhBdmCFqI6ZbmGtamQvQGuU1sgPTk8ZrXDD7jQ==}
+  postcss@8.5.3:
+    resolution: {integrity: sha512-dle9A3yYxlBSrt8Fu+IpjGT8SY8hN0mlaA6GY8t0P5PjIOZemULz/E2Bnm/2dcUOena75OTNkHI76uZBNUUq3A==}
     engines: {node: ^10 || ^12 || >=14}
 
   prelude-ls@1.2.1:
@@ -5042,7 +5042,7 @@ snapshots:
       '@tailwindcss/node': 4.0.9
       '@tailwindcss/oxide': 4.0.9
       lightningcss: 1.29.1
-      postcss: 8.5.1
+      postcss: 8.5.3
       tailwindcss: 4.0.9
 
   '@testing-library/dom@10.4.0':
@@ -5306,7 +5306,7 @@ snapshots:
       '@vue/shared': 3.5.13
       estree-walker: 2.0.2
       magic-string: 0.30.17
-      postcss: 8.5.1
+      postcss: 8.5.3
       source-map-js: 1.2.1
 
   '@vue/compiler-ssr@3.5.13':
@@ -7755,7 +7755,7 @@ snapshots:
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
-  postcss@8.5.1:
+  postcss@8.5.3:
     dependencies:
       nanoid: 3.3.8
       picocolors: 1.1.1
@@ -8469,7 +8469,7 @@ snapshots:
   vite@6.0.11(@types/node@20.17.30)(jiti@2.4.2)(lightningcss@1.29.1)(yaml@2.7.0):
     dependencies:
       esbuild: 0.24.2
-      postcss: 8.5.1
+      postcss: 8.5.3
       rollup: 4.32.1
     optionalDependencies:
       '@types/node': 20.17.30
