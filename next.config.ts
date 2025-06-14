@@ -1,10 +1,10 @@
-import unTypiaNext from '@ryoppippi/unplugin-typia/next';
+import type { NextConfig } from 'next';
 
-export default unTypiaNext({
+const config: NextConfig = {
 	output: 'export',
 	experimental: {
 		reactCompiler: true,
 	},
-}, {
-	cache: false,
-});
+};
+
+export default config;
