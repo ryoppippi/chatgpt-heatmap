@@ -1,46 +1,48 @@
-export type Conversation = {
-	id: string;
-	title: string;
-	create_time: number;
-	update_time: number;
-	mapping: Record<string, MappingNode>;
-	conversation_id: string;
-	current_node: string;
-	is_archived: boolean;
-};
+import { z } from 'zod/v4-mini';
 
-type MappingNode = {
-	id: string;
-	message: Message | null;
-	parent: string | null; // previous message node
-	children: string[]; // next message nodes
-};
+const AuthorSchema = z.object({
+	role: z.enum(['system', 'assistant', 'tool', 'user']),
+	name: z.union([z.string(), z.null()]),
+	metadata: z.record(z.string(), z.unknown()),
+});
 
-type Message = {
-	id: string;
-	author: Author;
-	create_time: number | null;
-	update_time: number | null;
-	content: MessageContent;
-	status: string;
-	end_turn: boolean | null;
-	weight: number;
-	metadata: MessageMetadata;
-	recipient: string;
-	channel: string | null;
-};
+const MessageContentSchema = z.object({
+	content_type: z.string(),
+	parts: z.optional(z.array(z.unknown())),
+});
 
-type Author = {
-	role: 'system' | 'assistant' | 'tool' | 'user';
-	name: string | null;
-	metadata: Record<string, unknown>;
-};
+const MessageMetadataSchema = z.record(z.string(), z.any());
 
-type MessageContent = {
-	content_type: string; // text, image, voice, etc.
-	parts?: unknown[];
-};
+const MessageSchema = z.object({
+	id: z.string(),
+	author: AuthorSchema,
+	create_time: z.union([z.number(), z.null()]),
+	update_time: z.union([z.number(), z.null()]),
+	content: MessageContentSchema,
+	status: z.string(),
+	end_turn: z.union([z.boolean(), z.null()]),
+	weight: z.number(),
+	metadata: MessageMetadataSchema,
+	recipient: z.string(),
+	channel: z.union([z.string(), z.null()]),
+});
 
-type MessageMetadata = {
-	[key: string]: any;
-};
+const MappingNodeSchema = z.object({
+	id: z.string(),
+	message: z.union([MessageSchema, z.null()]),
+	parent: z.union([z.string(), z.null()]),
+	children: z.array(z.string()),
+});
+
+export const ConversationSchema = z.object({
+	id: z.string(),
+	title: z.string(),
+	create_time: z.number(),
+	update_time: z.number(),
+	mapping: z.record(z.string(), MappingNodeSchema),
+	conversation_id: z.string(),
+	current_node: z.string(),
+	is_archived: z.boolean(),
+});
+
+export type Conversation = z.infer<typeof ConversationSchema>;
