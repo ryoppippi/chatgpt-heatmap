@@ -31,7 +31,7 @@ Uses Jotai for atomic state management. Main atoms are in `/lib/atom/`:
 ### Data Flow
 
 1. User uploads `conversations.json` via dropzone in `/app/form.tsx`
-2. File is parsed and validated using Typia schemas in `/lib/schema.ts`
+2. File is parsed and validated using Zod schemas in `/lib/schema.ts`
 3. Data stored in Jotai atoms
 4. Heatmap component (`/app/activity-heatmap.tsx`) subscribes to atoms and renders visualization using @nivo/calendar
 
@@ -43,10 +43,12 @@ Uses Jotai for atomic state management. Main atoms are in `/lib/atom/`:
 
 ### Type Safety
 
-The project uses Typia for runtime validation of ChatGPT export data. Main types are in `/lib/schema.ts`:
+The project uses Zod (zod-mini variant) for runtime validation of ChatGPT export data. Main schemas are in `/lib/schema.ts`:
 
-- `ChatGPTConversation` - Individual conversation structure
-- `ChatGPTExport` - Full export file structure
+- `ConversationSchema` - Individual conversation structure validation
+- `Conversation` - TypeScript type inferred from the schema
+
+Validation is handled in `/lib/validation.ts` using zod-mini's functional API for optimal bundle size.
 
 ## Development Notes
 

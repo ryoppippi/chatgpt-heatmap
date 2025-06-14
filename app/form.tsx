@@ -36,7 +36,7 @@ export function Form() {
 				alert('Invalid JSON file');
 				return {
 					status: 'error',
-					error: validationRes.errors.toString(),
+					error: validationRes.errors?.toString() ?? 'Validation failed',
 				};
 			}
 			return {
