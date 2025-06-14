@@ -1,7 +1,21 @@
-import type { Conversation } from './schema';
-import typia from 'typia';
+import { z } from 'zod/v4-mini';
+import { ConversationSchema } from './schema';
+
+const ConversationsArraySchema = z.array(ConversationSchema);
 
 export function validateConversations(data: unknown) {
-	const validationRes = typia.validate<Conversation[]>(data);
-	return validationRes;
+	const result = ConversationsArraySchema.safeParse(data);
+
+	if (result.success) {
+		return {
+			success: true,
+			data: result.data,
+		};
+	}
+	else {
+		return {
+			success: false,
+			errors: result.error,
+		};
+	}
 }
