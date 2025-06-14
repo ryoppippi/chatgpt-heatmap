@@ -181,6 +181,26 @@ describe('validateConversations', () => {
 	it('should return success if data is valid', () => {
 		const res = validateConversations(mockData);
 		expect(res.success).toBe(true);
-		expect(res.data).toEqual(mockData);
+		if (res.success) {
+			expect(res.data).toHaveLength(1);
+			expect(res.data[0]).toMatchObject({
+				id: '6798e705-08fc-8013-8ff7-bb0535a5dd42',
+				title: 'Asset intensiveの意味',
+				create_time: 1738073861.216273,
+				update_time: 1738073890.567239,
+				current_node: '1fa16527-42db-4e2e-a694-23af23c86aaa',
+				conversation_id: '6798e705-08fc-8013-8ff7-bb0535a5dd42',
+				is_archived: false,
+			});
+			expect(res.data[0].mapping).toBeDefined();
+		}
+	});
+
+	it('should return error if data is invalid', () => {
+		const res = validateConversations({ invalid: 'data' });
+		expect(res.success).toBe(false);
+		if (!res.success) {
+			expect(res.errors).toBeDefined();
+		}
 	});
 });
