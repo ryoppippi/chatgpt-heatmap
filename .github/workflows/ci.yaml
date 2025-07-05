@@ -1,8 +1,5 @@
 name: CI
 
-env:
-  NODE_VERSION: lts/*
-
 on:
   push:
   pull_request:
@@ -13,6 +10,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm lint
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - run: bun lint

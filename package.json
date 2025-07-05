@@ -2,7 +2,7 @@
 	"name": "chatgpt-heatmap",
 	"version": "0.2.2",
 	"private": true,
-	"packageManager": "pnpm@10.0.0",
+	"packageManager": "bun@1.2.16",
 	"scripts": {
 		"dev": "next dev --turbopack",
 		"build": "next build --turbopack",
@@ -12,7 +12,7 @@
 		"release": "nlx bumpp",
 		"test": "vitest",
 		"prepare": "husky",
-		"preinstall": "npx only-allow pnpm"
+		"preinstall": "npx only-allow bun"
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.2.3",
@@ -60,11 +60,6 @@
 		"vite-tsconfig-paths": "^5.1.4",
 		"vitest": "^3.0.4"
 	},
-	"pnpm": {
-		"executionEnv": {
-			"nodeVersion": "22.11.0"
-		}
-	},
 	"overrides": {
 		"react-is": "^19.0.0-rc-69d4b800-20241021"
 	},
@@ -72,5 +67,9 @@
 		"*.{js,jsx,ts,tsx,json,css,html,yaml,yml,md,svelte}": [
 			"eslint --cache --fix"
 		]
-	}
+	},
+	"trustedDependencies": [
+		"@tailwindcss/oxide",
+		"unrs-resolver"
+	]
 }
