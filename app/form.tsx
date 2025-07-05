@@ -1,5 +1,8 @@
 'use client';
 
+import { useSetAtom } from 'jotai';
+import { CloudUploadIcon } from 'lucide-react';
+import * as React from 'react';
 import {
 	Dropzone,
 	DropZoneArea,
@@ -9,9 +12,6 @@ import {
 } from '@/components/ui/dropzone';
 import { conversationsAtom } from '@/lib/atom';
 import { validateConversations } from '@/lib/validation';
-import { useSetAtom } from 'jotai';
-import { CloudUploadIcon } from 'lucide-react';
-import * as React from 'react';
 
 /** read file as text */
 async function readFileAsText(file: File): Promise<string> {

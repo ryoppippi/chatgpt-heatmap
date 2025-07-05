@@ -1,9 +1,9 @@
 import type { Conversation } from '../lib/schema';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { conversationsBySelectedDayAtom, selectedDayAtom } from '@/lib/atom';
 import { format, fromUnixTime } from 'date-fns';
 import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { conversationsBySelectedDayAtom, selectedDayAtom } from '@/lib/atom';
 
 const totalUserMessagesAtom = atom((get) => {
 	const conversations = get(conversationsBySelectedDayAtom);

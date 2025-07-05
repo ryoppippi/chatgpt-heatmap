@@ -1,8 +1,8 @@
 'use client';
 
-import { conversationsAtom } from '@/lib/atom';
 import { atom, useAtomValue } from 'jotai';
 import Link from 'next/link';
+import { conversationsAtom } from '@/lib/atom';
 import { ActivityHeatmap } from './activity-heatmap';
 import { ConversationList } from './conversation-list';
 import { Form } from './form';
