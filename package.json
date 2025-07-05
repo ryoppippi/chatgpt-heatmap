@@ -4,9 +4,9 @@
 	"private": true,
 	"packageManager": "bun@1.2.16",
 	"scripts": {
-		"dev": "next dev --turbopack",
-		"build": "next build --turbopack",
-		"start": "next start",
+		"dev": "bun -b next dev --turbopack",
+		"build": "bun -b next build --turbopack",
+		"start": "bun -b next start",
 		"lint": "next lint",
 		"format": "nr lint --fix",
 		"release": "nlx bumpp",
