@@ -4,8 +4,8 @@
 	"private": true,
 	"packageManager": "pnpm@10.0.0",
 	"scripts": {
-		"dev": "next dev",
-		"build": "next build",
+		"dev": "next dev --turbopack",
+		"build": "next build --turbopack",
 		"start": "next start",
 		"lint": "next lint",
 		"format": "nr lint --fix",
