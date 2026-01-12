@@ -19,7 +19,7 @@
         "react-dropzone": "^14.3.8",
         "tailwind-merge": "^3.4.0",
         "tailwindcss-animate": "^1.0.7",
-        "zod": "^4.3.4",
+        "zod": "^4.3.5",
       },
       "devDependencies": {
         "@antfu/ni": "^28.0.0",
