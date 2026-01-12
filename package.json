@@ -48,7 +48,7 @@
 		"babel-plugin-react-compiler": "19.0.0-beta-ebf51a3-20250411",
 		"eslint": "^9.39.2",
 		"eslint-config-next": "16.1.1",
-		"eslint-plugin-format": "^1.1.0",
+		"eslint-plugin-format": "^1.2.0",
 		"eslint-plugin-react-hooks": "^7.0.1",
 		"eslint-plugin-react-refresh": "^0.4.26",
 		"husky": "^9.1.7",
