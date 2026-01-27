@@ -58,7 +58,7 @@
 		"tailwindcss": "^4.1.18",
 		"typescript": "^5.9.3",
 		"vite-tsconfig-paths": "^6.0.5",
-		"vitest": "^4.0.17"
+		"vitest": "^4.0.18"
 	},
 	"overrides": {
 		"react-is": "^19.2.3"
