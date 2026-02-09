@@ -40,7 +40,7 @@
         "eslint-config-next": "16.1.6",
         "eslint-plugin-format": "^1.4.0",
         "eslint-plugin-react-hooks": "^7.0.1",
-        "eslint-plugin-react-refresh": "^0.4.26",
+        "eslint-plugin-react-refresh": "^0.5.0",
         "husky": "^9.1.7",
         "jsdom": "^27.4.0",
         "lint-staged": "^16.2.7",
@@ -886,7 +886,7 @@
 
     "eslint-plugin-react-naming-convention": ["eslint-plugin-react-naming-convention@1.53.1", "", { "dependencies": { "@eslint-react/ast": "1.53.1", "@eslint-react/core": "1.53.1", "@eslint-react/eff": "1.53.1", "@eslint-react/kit": "1.53.1", "@eslint-react/shared": "1.53.1", "@eslint-react/var": "1.53.1", "@typescript-eslint/scope-manager": "^8.43.0", "@typescript-eslint/type-utils": "^8.43.0", "@typescript-eslint/types": "^8.43.0", "@typescript-eslint/utils": "^8.43.0", "string-ts": "^2.2.1", "ts-pattern": "^5.8.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0", "typescript": "^4.9.5 || ^5.3.3" }, "optionalPeers": ["typescript"] }, "sha512-rvZ/B/CSVF8d34HQ4qIt90LRuxotVx+KUf3i1OMXAyhsagEFMRe4gAlPJiRufZ+h9lnuu279bEdd+NINsXOteA=="],
 
-    "eslint-plugin-react-refresh": ["eslint-plugin-react-refresh@0.4.26", "", { "peerDependencies": { "eslint": ">=8.40" } }, "sha512-1RETEylht2O6FM/MvgnyvT+8K21wLqDNg4qD51Zj3guhjt433XbnnkVttHMyaVyAFD03QSV4LPS5iE3VQmO7XQ=="],
+    "eslint-plugin-react-refresh": ["eslint-plugin-react-refresh@0.5.0", "", { "peerDependencies": { "eslint": ">=9" } }, "sha512-ZYvmh7VfVgqR/7wR71I3Zl6hK/C5CcxdWYKZSpHawS5JCNgE4efhQWg/+/WPpgGAp9Ngp/rRZYyaIwmPQBq/lA=="],
 
     "eslint-plugin-react-web-api": ["eslint-plugin-react-web-api@1.53.1", "", { "dependencies": { "@eslint-react/ast": "1.53.1", "@eslint-react/core": "1.53.1", "@eslint-react/eff": "1.53.1", "@eslint-react/kit": "1.53.1", "@eslint-react/shared": "1.53.1", "@eslint-react/var": "1.53.1", "@typescript-eslint/scope-manager": "^8.43.0", "@typescript-eslint/types": "^8.43.0", "@typescript-eslint/utils": "^8.43.0", "string-ts": "^2.2.1", "ts-pattern": "^5.8.0" }, "peerDependencies": { "eslint": "^8.57.0 || ^9.0.0", "typescript": "^4.9.5 || ^5.3.3" }, "optionalPeers": ["typescript"] }, "sha512-INVZ3Cbl9/b+sizyb43ChzEPXXYuDsBGU9BIg7OVTNPyDPloCXdI+dQFAcSlDocZhPrLxhPV3eT6+gXbygzYXg=="],
 
