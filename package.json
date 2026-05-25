@@ -21,7 +21,7 @@
 		"date-fns": "^4.3.0",
 		"esm-env": "^1.2.2",
 		"html2canvas": "^1.4.1",
-		"jotai": "^2.19.1",
+		"jotai": "^2.20.0",
 		"lucide-react": "^1.14.0",
 		"next": "^15.5.18",
 		"react": "^19.1.0",
