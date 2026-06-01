@@ -18,7 +18,7 @@
 		"@radix-ui/react-slot": "^1.2.4",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",
-		"date-fns": "^4.3.0",
+		"date-fns": "^4.4.0",
 		"esm-env": "^1.2.2",
 		"html2canvas": "^1.4.1",
 		"jotai": "^2.20.0",
