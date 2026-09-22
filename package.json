@@ -2,7 +2,7 @@
 	"name": "chatgpt-heatmap",
 	"version": "0.2.2",
 	"private": true,
-	"packageManager": "bun@1.2.16",
+	"packageManager": "bun@1.4.2",
 	"scripts": {
 		"dev": "bun -b next dev --turbopack",
 		"build": "bun -b next build --turbopack",
