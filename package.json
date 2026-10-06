@@ -61,7 +61,7 @@
 		"vitest": "^4.1.11"
 	},
 	"overrides": {
-		"react-is": "^19.2.8"
+		"react-is": "^19.3.0"
 	},
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx,json,css,html,yaml,yml,md,svelte}": [
