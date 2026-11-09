@@ -52,7 +52,7 @@ Validation is handled in `/lib/validation.ts` using zod-mini's functional API fo
 
 ## Development Notes
 
-- Next.js 15 with App Router - all pages/components in `/app` directory
+- Next.js 16 with App Router - all pages/components in `/app` directory
 - Tailwind CSS v4 with custom animations defined in `tailwind.config.ts`
 - React Compiler enabled (experimental) for optimizations
 - Pre-commit hooks run linting on staged files via Husky + lint-staged

@@ -8,13 +8,13 @@ export function validateConversations(data: unknown) {
 
 	if (result.success) {
 		return {
-			success: true,
+			success: true as const,
 			data: result.data,
 		};
 	}
 	else {
 		return {
-			success: false,
+			success: false as const,
 			errors: result.error,
 		};
 	}
