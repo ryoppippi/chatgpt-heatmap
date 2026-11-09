@@ -7,7 +7,7 @@
 		"dev": "bun -b next dev --turbopack",
 		"build": "bun -b next build --turbopack",
 		"start": "bun -b next start",
-		"lint": "next lint",
+		"lint": "eslint --cache .",
 		"format": "nr lint --fix",
 		"release": "nlx bumpp",
 		"test": "vitest",
