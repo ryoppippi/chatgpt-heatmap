@@ -1,5 +1,6 @@
+import type { ClassValue } from 'clsx';
 import type { Conversation } from './schema';
-import { type ClassValue, clsx } from 'clsx';
+import { clsx } from 'clsx';
 import { format, fromUnixTime } from 'date-fns';
 import { twMerge } from 'tailwind-merge';
 
